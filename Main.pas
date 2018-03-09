@@ -42,7 +42,9 @@ type
     ///// メソッド
     procedure MakeCamera;
     procedure MoveCamera;
-    procedure LoadVoxels( const FileName_:STring; const BricX_,BricY_,BricZ_:Integer );
+    procedure LoadVolumeSVD( const FileName_:STring; const SizeX_,SizeY_,SizeZ_:Single; const BricX_,BricY_,BricZ_:Integer; const AnglX_,AnglY_:Single );  //Stanford volume data
+    procedure LoadVolumeTUW( const FileName_:STring; const SizeX_,SizeY_,SizeZ_:Single; const AnglX_,AnglY_:Single );  //TU Wien
+    procedure LoadVolumeECS( const FileName_:STring; const AnglX_,AnglY_:Single );  //ECS 277
   end;
 
 var
@@ -71,7 +73,7 @@ begin
 
      GLViewer1.Camera := _Camera;
 
-     _MouseA := TPointF.Create( 150, -20 );
+     _MouseA := TPointF.Create( 0, 0 );
 
      MoveCamera;
 end;
@@ -88,36 +90,139 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.LoadVoxels( const FileName_:STring; const BricX_,BricY_,BricZ_:Integer );
+procedure TForm1.LoadVolumeSVD( const FileName_:STring; const SizeX_,SizeY_,SizeZ_:Single; const BricX_,BricY_,BricZ_:Integer; const AnglX_,AnglY_:Single );
 var
-   X, Y, Z :Integer;
-   F :TFileStream;
-   Ws :TArray<Word>;
+   Vs :TArray<Word>;
+   VsN, X, Y, Z :Integer;
 begin
      with _Shaper do
      begin
+          SizeX := SizeX_;
+          SizeY := SizeY_;
+          SizeZ := SizeZ_;
+
           with Grider.Texels do
           begin
                GridsX := BricX_;
                GridsY := BricY_;
                GridsZ := BricZ_;
 
-               SetLength( Ws, GridsY * GridsX );
+               VsN := BricY_ * BricX_;
+
+               SetLength( Vs, VsN );
 
                for Z := 0 to BricsZ do
                begin
-                    F := TFileStream.Create( FileName_ + ( Z + 1 ).ToString, fmOpenRead );
+                    with TFileStream.Create( '..\..\_DATA\Stanford volume data\' + FileName_ + ( Z + 1 ).ToString, fmOpenRead ) do
+                    begin
+                         Read( Vs[ 0 ], SizeOf( Word ) * VsN );
 
-                    F.Read( Ws[ 0 ], GridsY * GridsX * SizeOf( Word ) );
-
-                    F.DisposeOf;
+                         DisposeOf;
+                    end;
 
                     for Y := 0 to BricsY do
-                    for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - RevBytes( Ws[ GridsX * Y + X ] ) / 4096;
+                    for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - RevBytes( Vs[ BricX_ * Y + X ] ) / 4096;
                end;
           end;
 
           MakeModel;
+
+          Pose := TSingleM4.RotateY( DegToRad( AnglX_ ) ) * TSingleM4.RotateX( DegToRad( AnglY_ ) );
+     end;
+end;
+
+procedure TForm1.LoadVolumeTUW( const FileName_:STring; const SizeX_,SizeY_,SizeZ_:Single; const AnglX_,AnglY_:Single );
+var
+   BsX, BsY, BsZ :Word;
+   VsN, X, Y, Z :Integer;
+   Vs :TArray<Word>;
+begin
+     with TFileStream.Create( '..\..\_DATA\TU Wien\' + FileName_, fmOpenRead ) do
+     begin
+          Read( BsX, SizeOf( Word ) );
+          Read( BsY, SizeOf( Word ) );
+          Read( BsZ, SizeOf( Word ) );
+
+          VsN := BsZ * BsY * BsX;
+
+          SetLength( Vs, VsN );
+
+          Read( Vs[ 0 ], SizeOf( Word ) * VsN );
+
+          DisposeOf;
+     end;
+
+     with _Shaper do
+     begin
+          SizeX := SizeX_;
+          SizeY := SizeY_;
+          SizeZ := SizeZ_;
+
+          with Grider.Texels do
+          begin
+               GridsX := BsX;
+               GridsY := BsY;
+               GridsZ := BsZ;
+
+               for Z := 0 to BricsZ do
+               for Y := 0 to BricsY do
+               for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - Vs[ ( BsY * Z + Y ) * BsX + X ] / 4095;
+          end;
+
+          MakeModel;
+
+          Pose := TSingleM4.RotateY( DegToRad( AnglX_ ) ) * TSingleM4.RotateX( DegToRad( AnglY_ ) );
+     end;
+end;
+
+procedure TForm1.LoadVolumeECS( const FileName_:STring; const AnglX_,AnglY_:Single );
+var
+   BsX, BsY, BsZ, MsN :Integer;
+   SX, SY, SZ :Single;
+   VsN, X, Y, Z :Integer;
+   Vs :TArray<Byte>;
+begin
+     with TFileStream.Create( '..\..\_DATA\ECS 277\' + FileName_, fmOpenRead ) do
+     begin
+          Read( BsZ, SizeOf( Integer ) );  BsZ := RevBytes( BsZ );
+          Read( BsY, SizeOf( Integer ) );  BsY := RevBytes( BsY );
+          Read( BsX, SizeOf( Integer ) );  BsX := RevBytes( BsX );
+
+          Read( MsN, SizeOf( Integer ) );  MsN := RevBytes( MsN );  Assert( MsN = 0, 'MsN = ' + MsN.ToString );
+
+          Read( SZ, SizeOf( Single ) );  SZ := RevBytes( SZ );
+          Read( SY, SizeOf( Single ) );  SY := RevBytes( SY );
+          Read( SX, SizeOf( Single ) );  SX := RevBytes( SX );
+
+          VsN := BsZ * BsY * BsX;
+
+          SetLength( Vs, VsN );
+
+          Read( Vs[ 0 ], SizeOf( Byte ) * VsN );
+
+          DisposeOf;
+     end;
+
+     with _Shaper do
+     begin
+          SizeX := SX;
+          SizeY := SY;
+          SizeZ := SZ;
+
+          with Grider.Texels do
+          begin
+               GridsX := BsX;
+               GridsY := BsY;
+               GridsZ := BsZ;
+
+               for Z := 0 to BricsZ do
+               for Y := 0 to BricsY do
+               for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - Vs[ ( Z * BsY + Y ) * BsX + X ] / 255;
+          end;
+
+          MakeModel;
+
+          Pose := TSingleM4.RotateY( DegToRad( AnglX_ ) ) * TSingleM4.RotateX( DegToRad( AnglY_ ) );
      end;
 end;
 
@@ -131,23 +236,30 @@ begin
 
      _Shaper := TMarcubes.Create( _Scener );
 
-     with _Shaper do
-     begin
-          SizeX := 2;
-          SizeY := 2;
-          SizeZ := 2;
-          {
-          with Matery as TMarcubesMateryFaces do
-          begin
-               Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
-          end;
-          }
-          Pose := TSingleM4.RotateX( DegToRad( 90 ) );
-     end;
+     ////////// Stanford volume data
+       LoadVolumeSVD( 'CThead\CThead.'  , 2, 2, 2, 256, 256, 113, 180, +90 );
+     //LoadVolumeSVD( 'MRbrain\MRbrain.', 2, 2, 1, 256, 256, 109, +90, 180 );
+     //LoadVolumeSVD( 'bunny-ctscan\'   , 2, 2, 2, 512, 512, 360, 180, +90 );
 
-     LoadVoxels( '..\..\_DATA\Stanford volume data\CThead\CThead.', 256, 256, 113 );
-     //LoadVoxels( '..\..\_DATA\Stanford volume data\bunny-ctscan\', 512, 512, 360 );
-     //LoadVoxels( '..\..\_DATA\Stanford volume data\MRbrain\MRbrain.', 256, 256, 109 );
+     ////////// TU Wien
+     //LoadVolumeTUW( 'present246x246x221.dat'            , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'present328x328x294.dat'            , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'present492x492x442.dat'            , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'stagbeetle208x208x123.dat'         , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'stagbeetle277x277x164.dat'         , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'dataset-stagbeetle-416x416x247.dat', 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'stagbeetle832x832x494.dat'         , 2, 2, 2, +90 , +90 );
+     //LoadVolumeTUW( 'christmastree128x124x128.dat'      , 2, 2, 2,  0  , -90 );
+     //LoadVolumeTUW( 'christmastree170x166x170.dat'      , 2, 2, 2,  0  , -90 );
+     //LoadVolumeTUW( 'christmastree256x249x256.dat'      , 2, 2, 2,  0  , -90 );
+     //LoadVolumeTUW( 'christmastree512x499x512.dat'      , 2, 2, 2,  0  , -90 );
+
+     ////////// ECS 277
+     //LoadVolumeECS( 'Skull.vol'   ,  0 , -90 );
+     //LoadVolumeECS( 'Foot.vol'    ,  0 , -90 );
+     //LoadVolumeECS( 'Frog.vol'    , -90, +90 );
+     //LoadVolumeECS( 'C60.vol'     ,  0 ,  0  );
+     //LoadVolumeECS( 'C60Large.vol',  0 ,  0  );
 
      ScrollBar1Change( Sender );
 end;
