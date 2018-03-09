@@ -320,6 +320,8 @@ procedure TForm1.ScrollBar1Change(Sender: TObject);
 begin
      _Shaper.Threshold := 1 - ScrollBar1.Value;
 
+     Caption := _Shaper.Threshold.ToString;
+
      GLViewer1.Repaint;
 end;
 
@@ -330,7 +332,7 @@ const
      FrameN = 30{fps} * 60{s};
 var
    R :TGLRender;
-   I, N :Integer;
+   I :Integer;
    T :SIngle;
 begin
      R := TGLRender.Create;
@@ -347,22 +349,13 @@ begin
      begin
           T := ( 1 - Cos( Pi / FrameN * I ) ) / 2;
 
-          N := Round( Power( 2, ( 8 - 4 ) * ( 1 - Cos( P2i * 5 * T ) ) / 2 + 4 ) );
-
-          _Shaper.LineS := 16 / N;
-
-          with _Shaper.Grider.Texels do
-          begin
-               BricsX := N;
-               BricsY := N;
-               BricsZ := N;
-          end;
+          _Shaper.Threshold := ( 0.97 - 0.43 ) * ( 1 + Sin( Pi4 * T ) ) / 2 + 0.43;
 
           with _Camera do
           begin
                Pose := TSingleM4.RotateY( 5 * Pi2 * T )
                      * TSingleM4.RotateX( -P4i * Sin( 3 * Pi2 * T ) )
-                     * TSingleM4.Translate( 0, 0, ( 1 - 3 ) * ( 1 - Cos( Pi2 * T ) ) / 2 + 3 );
+                     * TSingleM4.Translate( 0, 0, ( 2 - 3 ) * ( 1 - Cos( Pi2 * T ) ) / 2 + 3 );
           end;
 
           with R do
