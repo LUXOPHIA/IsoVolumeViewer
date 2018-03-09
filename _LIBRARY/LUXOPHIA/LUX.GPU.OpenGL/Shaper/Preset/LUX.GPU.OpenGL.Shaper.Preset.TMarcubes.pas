@@ -365,7 +365,7 @@ begin
 
      Threshold := 0.5;
 
-     _LineS := 0.1;
+     _LineS := 1;
 
      _IsShowCubes := False;
 end;
