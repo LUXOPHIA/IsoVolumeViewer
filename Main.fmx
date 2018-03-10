@@ -56,15 +56,31 @@ object Form1: TForm1
       SmallChange = 0.000000000000000000
       Orientation = Vertical
       Margins.Left = 10.000000000000000000
-      Margins.Top = 10.000000000000000000
       Margins.Right = 10.000000000000000000
       Position.X = 50.000000000000000000
-      Position.Y = 10.000000000000000000
+      Position.Y = 70.000000000000000000
       Size.Width = 20.000000000000000000
-      Size.Height = 540.000000000000000000
+      Size.Height = 480.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       OnChange = ScrollBar1Change
+    end
+    object Label1: TLabel
+      Align = Top
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 20.000000000000000000
+      TextSettings.HorzAlign = Center
+      Text = '1.2345'
+      TabOrder = 2
     end
   end
 end

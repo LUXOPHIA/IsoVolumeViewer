@@ -21,6 +21,7 @@ type
     Panel1: TPanel;
     Button1: TButton;
     ScrollBar1: TScrollBar;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GLViewer1DblClick(Sender: TObject);
@@ -320,7 +321,7 @@ procedure TForm1.ScrollBar1Change(Sender: TObject);
 begin
      _Shaper.Threshold := 1 - ScrollBar1.Value;
 
-     Caption := _Shaper.Threshold.ToString;
+     Label1.Text := FloatToStr( _Shaper.Threshold, 5 );
 
      GLViewer1.Repaint;
 end;
