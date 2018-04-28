@@ -22,9 +22,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D_AlphaColorF
 
-     TGLGrider3D_AlphaColorF = class( TGLGrider3D<TAlphaColorF> )
+     TGLPoiTex3D_AlphaColorF = class( TGLPoiTex3D<TAlphaColorF> )
      private
      protected
      public
@@ -42,9 +42,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_Single
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D_Single
 
-     TGLGrider3D_Single = class( TGLGrider3D<Single> )
+     TGLPoiTex3D_Single = class( TGLPoiTex3D<Single> )
      private
      protected
      public
@@ -89,7 +89,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D_AlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -97,7 +97,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLGrider3D_AlphaColorF.Create;
+constructor TGLPoiTex3D_AlphaColorF.Create;
 begin
      inherited;
 
@@ -106,7 +106,7 @@ begin
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLGrider3D_AlphaColorF.Destroy;
+destructor TGLPoiTex3D_AlphaColorF.Destroy;
 begin
 
      inherited;
@@ -135,7 +135,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_Single
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D_Single
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -143,7 +143,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLGrider3D_Single.Create;
+constructor TGLPoiTex3D_Single.Create;
 begin
      inherited;
 
@@ -152,7 +152,7 @@ begin
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLGrider3D_Single.Destroy;
+destructor TGLPoiTex3D_Single.Destroy;
 begin
 
      inherited;
