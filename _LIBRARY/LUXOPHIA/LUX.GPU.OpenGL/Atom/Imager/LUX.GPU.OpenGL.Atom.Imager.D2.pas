@@ -52,9 +52,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider2D<_TTexel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex2D<_TTexel_>
 
-     TGLGrider2D<_TTexel_:record> = class( TGLImager2D<_TTexel_,TPoinArray2D<_TTexel_>> )
+     TGLPoiTex2D<_TTexel_:record> = class( TGLImager2D<_TTexel_,TPoinArray2D<_TTexel_>> )
      private
      protected
      public
@@ -146,7 +146,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider2D<_TTexel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex2D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -154,7 +154,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLGrider2D<_TTexel_>.Create;
+constructor TGLPoiTex2D<_TTexel_>.Create;
 begin
      inherited;
 
@@ -165,7 +165,7 @@ begin
      end;
 end;
 
-destructor TGLGrider2D<_TTexel_>.Destroy;
+destructor TGLPoiTex2D<_TTexel_>.Destroy;
 begin
 
      inherited;
