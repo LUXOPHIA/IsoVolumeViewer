@@ -85,7 +85,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _MaterC      :IMarcubesMateryCubes;
-       _Grider      :TGLGrider3D_Single;
+       _Grider      :TGLPoiTex3D_Single;
        _Size        :TGLUniBuf<TSingle3D>;
        _Threshold   :TGLUniBuf<Single>;
        _LineS       :Single;
@@ -103,7 +103,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Grider      :TGLGrider3D_Single read   _Grider                          ;
+       property Grider      :TGLPoiTex3D_Single read   _Grider                          ;
        property SizeX       :Single             read GetSizeX       write SetSizeX      ;
        property SizeY       :Single             read GetSizeY       write SetSizeY      ;
        property SizeZ       :Single             read GetSizeZ       write SetSizeZ      ;
@@ -342,7 +342,7 @@ constructor TMarcubes.Create;
 begin
      inherited;
 
-     _Grider    := TGLGrider3D_Single.Create;
+     _Grider    := TGLPoiTex3D_Single.Create;
      _Size      := TGLUniBuf<TSingle3D>.Create( GL_STATIC_DRAW );
      _Threshold := TGLUniBuf<Single>.Create( GL_STATIC_DRAW );
 
