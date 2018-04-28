@@ -3,7 +3,10 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.GPU.OpenGL.Atom, LUX.GPU.OpenGL.Atom.Textur;
+     LUX,
+     LUX.Data.Lattice,
+     LUX.GPU.OpenGL.Atom,
+     LUX.GPU.OpenGL.Atom.Textur;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -87,7 +90,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager = class( TGLTextur, IGLImager )
+     TGLImager<_TTexel_:record;_TTexels_:constructor,TCoreArray<_TTexel_>> = class( TGLTextur<_TTexel_,_TTexels_>, IGLImager )
      private
      protected
        _Sampler :TGLSampler;
@@ -236,21 +239,21 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLImager.GetSampler :TGLSampler;
+function TGLImager<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
 begin
      Result := _Sampler;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager.Create( const Kind_:GLenum );
+constructor TGLImager<_TTexel_,_TTexels_>.Create( const Kind_:GLenum );
 begin
      inherited;
 
      _Sampler := TGLSampler.Create;
 end;
 
-destructor TGLImager.Destroy;
+destructor TGLImager<_TTexel_,_TTexels_>.Destroy;
 begin
      _Sampler.DisposeOf;
 
@@ -259,14 +262,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager.Use( const BindI_:GLuint );
+procedure TGLImager<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
      inherited;
 
      _Sampler.Use( BindI_ );
 end;
 
-procedure TGLImager.Unuse( const BindI_:GLuint );
+procedure TGLImager<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
      _Sampler.Unuse( BindI_ );
 
