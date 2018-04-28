@@ -14,9 +14,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTexture1D<_TTexel_,_TTexels_>
 
-     IGLImager1D = interface( IGLImager )
+     IGLTexture1D = interface( IGLTexture )
      ['{9802F2EE-57A9-4E2E-AE7F-CCC6A32DC3FE}']
      {protected}
      {public}
@@ -26,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager1D<_TTexel_:record;_TTexels_:constructor,TArray1D<_TTexel_>> = class( TGLImage1D<_TTexel_,_TTexels_>, IGLImager1D )
+     TGLTexture1D<_TTexel_:record;_TTexels_:constructor,TArray1D<_TTexel_>> = class( TGLImage1D<_TTexel_,_TTexels_>, IGLTexture1D )
      private
      protected
        _Sampler :TGLSampler;
@@ -44,7 +44,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D<_TTexel_>
 
-     TGLCelTex1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TCellArray1D<_TTexel_>> )
+     TGLCelTex1D<_TTexel_:record> = class( TGLTexture1D<_TTexel_,TCellArray1D<_TTexel_>> )
      private
      protected
      public
@@ -54,7 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex1D<_TTexel_>
 
-     TGLPoiTex1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TPoinArray1D<_TTexel_>> )
+     TGLPoiTex1D<_TTexel_:record> = class( TGLTexture1D<_TTexel_,TPoinArray1D<_TTexel_>> )
      private
      protected
      public
@@ -76,7 +76,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTexture1D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -84,21 +84,21 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLImager1D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
+function TGLTexture1D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
 begin
      Result := _Sampler;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D<_TTexel_,_TTexels_>.Create;
+constructor TGLTexture1D<_TTexel_,_TTexels_>.Create;
 begin
      inherited;
 
      _Sampler := TGLSampler.Create;
 end;
 
-destructor TGLImager1D<_TTexel_,_TTexels_>.Destroy;
+destructor TGLTexture1D<_TTexel_,_TTexels_>.Destroy;
 begin
      _Sampler.DisposeOf;
 
@@ -107,14 +107,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
+procedure TGLTexture1D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
      inherited;
 
      _Sampler.Use( BindI_ );
 end;
 
-procedure TGLImager1D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
+procedure TGLTexture1D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
      _Sampler.Unuse( BindI_ );
 
