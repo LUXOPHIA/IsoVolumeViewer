@@ -41,7 +41,6 @@ uses
   LUX.FMX.Forms in '_LIBRARY\LUXOPHIA\LUX\FMX\LUX.FMX.Forms.pas',
   LUX.GPU.OpenGL.Shaper.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\LUX.GPU.OpenGL.Shaper.Preset.pas',
   LUX.GPU.OpenGL.Matery.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas',
-  LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas',
   LUX.Data.Tree in '_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Tree.pas',
   LUX.Data.Octree in '_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Octree.pas',
   LUX.Data.Lattice.T2 in '_LIBRARY\LUXOPHIA\LUX\Data\Lattice\LUX.Data.Lattice.T2.pas',
@@ -73,7 +72,8 @@ uses
   LUX.GPU.OpenGL.Atom.Texture.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D3.pas',
   LUX.GPU.OpenGL.Atom.Texture.D1.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D1\_FMX\LUX.GPU.OpenGL.Atom.Texture.D1.Preset.pas',
   LUX.GPU.OpenGL.Atom.Texture.D2.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D2\_FMX\LUX.GPU.OpenGL.Atom.Texture.D2.Preset.pas',
-  LUX.GPU.OpenGL.Atom.Texture.D3.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D3\_FMX\LUX.GPU.OpenGL.Atom.Texture.D3.Preset.pas';
+  LUX.GPU.OpenGL.Atom.Texture.D3.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D3\_FMX\LUX.GPU.OpenGL.Atom.Texture.D3.Preset.pas',
+  LUX.GPU.OpenGL.Matery.Texture.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Texture\_FMX\LUX.GPU.OpenGL.Matery.Texture.Preset.pas';
 
 {$R *.res}
 
