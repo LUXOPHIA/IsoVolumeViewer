@@ -5,7 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Atom.Imager,
+     LUX.GPU.OpenGL.Atom.Texture,
      LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
      LUX.GPU.OpenGL.Matery;
 

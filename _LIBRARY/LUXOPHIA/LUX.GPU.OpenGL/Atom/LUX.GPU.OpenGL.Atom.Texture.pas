@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager;
+﻿unit LUX.GPU.OpenGL.Atom.Texture;
 
 interface //#################################################################### ■
 
