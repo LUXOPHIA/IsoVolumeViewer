@@ -50,12 +50,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMarcubesMateryFacesMIR = class( TGLMateryNorTexG, IMarcubesMateryFacesMIR )
      private
      protected
-       _Imager :TGLBricer2D_TAlphaColorF;
+       _Imager :TGLCelTex2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Imager :TGLBricer2D_TAlphaColorF read _Imager;
+       property Imager :TGLCelTex2D_TAlphaColorF read _Imager;
        ///// メソッド
        procedure Use; override;
        procedure Unuse; override;
@@ -215,7 +215,7 @@ begin
           ShaderF.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_FacesMIR_F_glsl' );
      end;
 
-     _Imager := TGLBricer2D_TAlphaColorF.Create;
+     _Imager := TGLCelTex2D_TAlphaColorF.Create;
 end;
 
 destructor TMarcubesMateryFacesMIR.Destroy;
