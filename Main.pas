@@ -22,6 +22,7 @@ type
     Button1: TButton;
     ScrollBar1: TScrollBar;
     Label1: TLabel;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GLViewer1DblClick(Sender: TObject);
@@ -30,6 +31,7 @@ type
     procedure GLViewer1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure ScrollBar1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { private 宣言 }
     _MouseA :TSingle2D;
@@ -272,6 +274,13 @@ end;
 
 ////////////////////////////////////////////////////////////////////////////////
 
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+     GLViewer1.Repaint;
+end;
+
+//------------------------------------------------------------------------------
+
 procedure TForm1.GLViewer1DblClick(Sender: TObject);
 begin
      with GLViewer1.MakeScreenShot do
@@ -302,8 +311,6 @@ begin
 
           MoveCamera;
 
-          GLViewer1.Repaint;
-
           _MouseP := P;
      end;
 end;
@@ -322,8 +329,6 @@ begin
      _Shaper.Threshold := 1 - ScrollBar1.Value;
 
      Label1.Text := FloatToStr( _Shaper.Threshold, 5 );
-
-     GLViewer1.Repaint;
 end;
 
 //------------------------------------------------------------------------------
