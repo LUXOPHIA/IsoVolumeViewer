@@ -3,7 +3,10 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.Data.Lattice.T2, LUX.GPU.OpenGL.Atom.Imager;
+     LUX,
+     LUX.Data.Lattice.T2,
+     LUX.GPU.OpenGL.Atom.Textur.D2,
+     LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -23,19 +26,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager, IGLImager2D )
+     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLTextur2D<_TTexel_,_TTexels_>, IGLImager2D )
      private
      protected
-       _Texels :_TTexels_;
+       _Sampler :TGLSampler;
+       ///// アクセス
+       function GetSampler :TGLSampler;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Texels :_TTexels_ read _Texels;
+       property Sampler :TGLSampler read GetSampler;
        ///// メソッド
-       procedure SendData; override;
-       procedure ReceData; override;
-       procedure SendPixBuf; override;
+       procedure Use( const BindI_:GLuint ); override;
+       procedure Unuse( const BindI_:GLuint ); override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D<_TTexel_>
@@ -78,50 +82,43 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLImager2D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
+begin
+     Result := _Sampler;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TGLImager2D<_TTexel_,_TTexels_>.Create;
 begin
-     inherited Create( GL_TEXTURE_2D );
+     inherited;
 
-     _Texels := _TTexels_.Create;
+     _Sampler := TGLSampler.Create;
 end;
 
 destructor TGLImager2D<_TTexel_,_TTexels_>.Destroy;
 begin
-     _Texels.DisposeOf;
+     _Sampler.DisposeOf;
 
      inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager2D<_TTexel_,_TTexels_>.SendData;
+procedure TGLImager2D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
-     Bind;
-       glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
-                                        _Texels.ElemsY, 0,
-                               _PixelF,
-                               _PixelT,
-                               _Texels.Elem0P );
-     Unbind;
+     inherited;
+
+     _Sampler.Use( BindI_ );
 end;
 
-procedure TGLImager2D<_TTexel_,_TTexels_>.ReceData;
+procedure TGLImager2D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
-     Bind;
-       glGetTexImage( _Kind, 0, _PixelF, _PixelT, _Texels.Elem0P );
-     Unbind;
-end;
+     _Sampler.Unuse( BindI_ );
 
-//------------------------------------------------------------------------------
-
-procedure TGLImager2D<_TTexel_,_TTexels_>.SendPixBuf;
-begin
-     glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
-                                      _Texels.ElemsY, 0,
-                             _PixelF,
-                             _PixelT, nil );
+     inherited;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D<_TTexel_>
@@ -136,7 +133,7 @@ constructor TGLBricer2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Field do
+     with _Sampler do
      begin
           WrapU := GL_MIRRORED_REPEAT;
           WrapV := GL_MIRRORED_REPEAT;
@@ -161,7 +158,7 @@ constructor TGLGrider2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Field do
+     with _Sampler do
      begin
           WrapU := GL_CLAMP_TO_EDGE;
           WrapV := GL_CLAMP_TO_EDGE;

@@ -1,10 +1,9 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager.D1.Preset;
+﻿unit LUX.GPU.OpenGL.Atom.Textur.D3;
 
 interface //#################################################################### ■
 
-uses System.UITypes,
-     Vcl.Graphics,
-     LUX, LUX.GPU.OpenGL.Atom.Imager.D1;
+uses Winapi.OpenGL, Winapi.OpenGLext,
+     LUX, LUX.Data.Lattice.T3, LUX.GPU.OpenGL.Atom.Textur;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -12,19 +11,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur3D<_TTexel_,_TTexels_>
 
-     TGLBricer1D_TAlphaColorF = class( TGLBricer1D<TAlphaColorF> )
+     IGLTextur3D = interface( IGLTextur )
+     ['{EBD2C427-B4C8-4649-8654-E79708545A23}']
+     {protected}
+     {public}
+     end;
+
+     //-------------------------------------------------------------------------
+
+     TGLTextur3D<_TTexel_:record;_TTexels_:constructor,TArray3D<_TTexel_>> = class( TGLTextur<_TTexel_,_TTexels_>, IGLTextur3D )
      private
      protected
      public
        constructor Create;
        destructor Destroy; override;
        ///// メソッド
-       procedure ImportFrom( const BMP_:TBitmap );
-       procedure ExportTo( const BMP_:TBitmap );
-       procedure LoadFromFile( const FileName_:String );
-       procedure SaveToFile( const FileName_:String );
+       procedure SendData; override;
+       procedure SendPixBuf; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -35,13 +40,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses Winapi.OpenGL, Winapi.OpenGLext;
+uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur3D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -49,16 +54,13 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLBricer1D_TAlphaColorF.Create;
+constructor TGLTextur3D<_TTexel_,_TTexels_>.Create;
 begin
-     inherited;
+     inherited Create( GL_TEXTURE_3D );
 
-     _TexelF := GL_RGBA;
-     _PixelF := GL_RGBA;
-     _PixelT := GL_FLOAT;
 end;
 
-destructor TGLBricer1D_TAlphaColorF.Destroy;
+destructor TGLTextur3D<_TTexel_,_TTexels_>.Destroy;
 begin
 
      inherited;
@@ -66,67 +68,27 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLBricer1D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
-var
-   X :Integer;
-   C :TAlphaColorF;
+procedure TGLTextur3D<_TTexel_,_TTexels_>.SendData;
 begin
-     Texels.CellsX := BMP_.Width;
-
-     for X := 0 to Texels.CellsX-1 do
-     begin
-          with TColorRec( BMP_.Canvas.Pixels[ X, 0 ] ) do
-          begin
-               C.R := R / 255;
-               C.G := G / 255;
-               C.B := B / 255;
-               C.A := 1      ;
-          end;
-
-          Texels[ X ] := C;
-     end;
-
-     SendData;
-end;
-
-procedure TGLBricer1D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
-var
-   X :Integer;
-begin
-     BMP_.SetSize( Texels.CellsX, 1 );
-
-     for X := 0 to Texels.CellsX-1 do
-     begin
-          BMP_.Canvas.Pixels[ X, 0 ] := Texels[ X ].ToAlphaColor;
-     end;
+     Bind;
+       glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
+                                        _Texels.ElemsY,
+                                        _Texels.ElemsZ, 0,
+                               _PixelF,
+                               _PixelT,
+                               _Texels.Elem0P );
+     Unbind;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLBricer1D_TAlphaColorF.LoadFromFile( const FileName_:String );
-var
-   B :TBitmap;
+procedure TGLTextur3D<_TTexel_,_TTexels_>.SendPixBuf;
 begin
-     B := TBitmap.Create;
-
-     B.LoadFromFile( FileName_ );
-
-     ImportFrom( B );
-
-     B.DisposeOf;
-end;
-
-procedure TGLBricer1D_TAlphaColorF.SaveToFile( const FileName_:String );
-var
-   B :TBitmap;
-begin
-     B := TBitmap.Create;
-
-     ExportTo( B );
-
-     B.SaveToFile( FileName_ );
-
-     B.DisposeOf;
+     glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
+                                      _Texels.ElemsY,
+                                      _Texels.ElemsZ, 0,
+                             _PixelF,
+                             _PixelT, nil );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
