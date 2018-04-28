@@ -104,15 +104,15 @@ begin
 
           with Grider.Texels do
           begin
-               GridsX := BricX_;
-               GridsY := BricY_;
-               GridsZ := BricZ_;
+               PoinsX := BricX_;
+               PoinsY := BricY_;
+               PoinsZ := BricZ_;
 
                VsN := BricY_ * BricX_;
 
                SetLength( Vs, VsN );
 
-               for Z := 0 to BricsZ do
+               for Z := 0 to CellsZ do
                begin
                     with TFileStream.Create( '..\..\_DATA\Stanford volume data\' + FileName_ + ( Z + 1 ).ToString, fmOpenRead ) do
                     begin
@@ -121,8 +121,8 @@ begin
                          DisposeOf;
                     end;
 
-                    for Y := 0 to BricsY do
-                    for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - RevBytes( Vs[ BricX_ * Y + X ] ) / 4096;
+                    for Y := 0 to CellsY do
+                    for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - RevBytes( Vs[ BricX_ * Y + X ] ) / 4096;
                end;
           end;
 
@@ -161,13 +161,13 @@ begin
 
           with Grider.Texels do
           begin
-               GridsX := BsX;
-               GridsY := BsY;
-               GridsZ := BsZ;
+               PoinsX := BsX;
+               PoinsY := BsY;
+               PoinsZ := BsZ;
 
-               for Z := 0 to BricsZ do
-               for Y := 0 to BricsY do
-               for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - Vs[ ( BsY * Z + Y ) * BsX + X ] / 4095;
+               for Z := 0 to CellsZ do
+               for Y := 0 to CellsY do
+               for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - Vs[ ( BsY * Z + Y ) * BsX + X ] / 4095;
           end;
 
           MakeModel;
@@ -212,13 +212,13 @@ begin
 
           with Grider.Texels do
           begin
-               GridsX := BsX;
-               GridsY := BsY;
-               GridsZ := BsZ;
+               PoinsX := BsX;
+               PoinsY := BsY;
+               PoinsZ := BsZ;
 
-               for Z := 0 to BricsZ do
-               for Y := 0 to BricsY do
-               for X := 0 to BricsX do Grids[ X, Y, Z ] := 1 - Vs[ ( Z * BsY + Y ) * BsX + X ] / 255;
+               for Z := 0 to CellsZ do
+               for Y := 0 to CellsY do
+               for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - Vs[ ( Z * BsY + Y ) * BsX + X ] / 255;
           end;
 
           MakeModel;
