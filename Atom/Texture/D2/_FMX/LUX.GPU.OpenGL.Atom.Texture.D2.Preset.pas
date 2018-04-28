@@ -1,10 +1,10 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager.D2.Preset;
+﻿unit LUX.GPU.OpenGL.Atom.Texture.D2.Preset;
 
 interface //#################################################################### ■
 
 uses System.UITypes,
      FMX.Graphics,
-     LUX, LUX.GPU.OpenGL.Atom.Imager.D2;
+     LUX, LUX.GPU.OpenGL.Atom.Texture.D2;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
