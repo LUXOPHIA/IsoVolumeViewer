@@ -1,11 +1,11 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager.D1;
+﻿unit LUX.GPU.OpenGL.Atom.Texture.D3;
 
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
-     LUX.Data.Lattice.T1,
-     LUX.GPU.OpenGL.Atom.Image.D1,
+     LUX.Data.Lattice.T3,
+     LUX.GPU.OpenGL.Atom.Image.D3,
      LUX.GPU.OpenGL.Atom.Texture;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -14,10 +14,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TTexel_,_TTexels_>
 
-     IGLImager1D = interface( IGLImager )
-     ['{9802F2EE-57A9-4E2E-AE7F-CCC6A32DC3FE}']
+     IGLImager3D = interface( IGLImager )
+     ['{9901BFAD-086D-4BC7-A870-56DB2A7A2BD0}']
      {protected}
      {public}
        ///// メソッド
@@ -26,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager1D<_TTexel_:record;_TTexels_:constructor,TArray1D<_TTexel_>> = class( TGLImage1D<_TTexel_,_TTexels_>, IGLImager1D )
+     TGLImager3D<_TTexel_:record;_TTexels_:constructor,TArray3D<_TTexel_>> = class( TGLImage3D<_TTexel_,_TTexels_>, IGLImager3D )
      private
      protected
        _Sampler :TGLSampler;
@@ -42,9 +42,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Unuse( const BindI_:GLuint ); override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D<_TTexel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex3D<_TTexel_>
 
-     TGLCelTex1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TCellArray1D<_TTexel_>> )
+     TGLCelTex3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TCellArray3D<_TTexel_>> )
      private
      protected
      public
@@ -52,9 +52,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex1D<_TTexel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D<_TTexel_>
 
-     TGLPoiTex1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TPoinArray1D<_TTexel_>> )
+     TGLPoiTex3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TPoinArray3D<_TTexel_>> )
      private
      protected
      public
@@ -76,7 +76,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -84,21 +84,21 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLImager1D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
+function TGLImager3D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
 begin
      Result := _Sampler;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D<_TTexel_,_TTexels_>.Create;
+constructor TGLImager3D<_TTexel_,_TTexels_>.Create;
 begin
      inherited;
 
      _Sampler := TGLSampler.Create;
 end;
 
-destructor TGLImager1D<_TTexel_,_TTexels_>.Destroy;
+destructor TGLImager3D<_TTexel_,_TTexels_>.Destroy;
 begin
      _Sampler.DisposeOf;
 
@@ -107,21 +107,21 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
+procedure TGLImager3D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
      inherited;
 
      _Sampler.Use( BindI_ );
 end;
 
-procedure TGLImager1D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
+procedure TGLImager3D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
      _Sampler.Unuse( BindI_ );
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D<_TTexel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex3D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -129,23 +129,25 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLCelTex1D<_TTexel_>.Create;
+constructor TGLCelTex3D<_TTexel_>.Create;
 begin
      inherited;
 
      with _Sampler do
      begin
           WrapU := GL_MIRRORED_REPEAT;
+          WrapV := GL_MIRRORED_REPEAT;
+          WrapW := GL_MIRRORED_REPEAT;
      end;
 end;
 
-destructor TGLCelTex1D<_TTexel_>.Destroy;
+destructor TGLCelTex3D<_TTexel_>.Destroy;
 begin
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex1D<_TTexel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex3D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -153,17 +155,19 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLPoiTex1D<_TTexel_>.Create;
+constructor TGLPoiTex3D<_TTexel_>.Create;
 begin
      inherited;
 
      with _Sampler do
      begin
           WrapU := GL_CLAMP_TO_EDGE;
+          WrapV := GL_CLAMP_TO_EDGE;
+          WrapW := GL_CLAMP_TO_EDGE;
      end;
 end;
 
-destructor TGLPoiTex1D<_TTexel_>.Destroy;
+destructor TGLPoiTex3D<_TTexel_>.Destroy;
 begin
 
      inherited;
