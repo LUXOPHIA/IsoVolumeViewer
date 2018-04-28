@@ -5,7 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.Data.Lattice.T3,
-     LUX.GPU.OpenGL.Atom.Textur.D3,
+     LUX.GPU.OpenGL.Atom.Image.D3,
      LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
