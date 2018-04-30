@@ -104,7 +104,7 @@ begin
           SizeY := SizeY_;
           SizeZ := SizeZ_;
 
-          with Grider.Texels do
+          with Textur.Imager.Grider do
           begin
                PoinsX := BricX_;
                PoinsY := BricY_;
@@ -161,7 +161,7 @@ begin
           SizeY := SizeY_;
           SizeZ := SizeZ_;
 
-          with Grider.Texels do
+          with Textur.Imager.Grider do
           begin
                PoinsX := BsX;
                PoinsY := BsY;
@@ -212,7 +212,7 @@ begin
           SizeY := SY;
           SizeZ := SZ;
 
-          with Grider.Texels do
+          with Textur.Imager.Grider do
           begin
                PoinsX := BsX;
                PoinsY := BsY;
