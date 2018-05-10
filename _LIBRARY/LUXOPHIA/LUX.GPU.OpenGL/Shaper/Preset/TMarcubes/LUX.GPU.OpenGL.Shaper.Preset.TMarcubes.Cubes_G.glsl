@@ -12,7 +12,7 @@ layout( std140 ) uniform TThreshold{ float _Threshold; };
 
 //------------------------------------------------------------------------------
 
-uniform sampler3D _Grider;
+uniform sampler3D _Grid;
 
 /*
  -1     0    +1    +2    +3    +4    +5 = ItemPoins Coordinate
@@ -20,7 +20,7 @@ uniform sampler3D _Grider;
   |     |     |     |     |     |     |
   1     2     3     4     5     6     7 = ElemPoinsN
   +-----o-----o-----o-----o-----o-----+
-  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemBricsN = ElemPoinsN-1
+  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemCellsN = ElemPoinsN-1
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
@@ -30,20 +30,20 @@ uniform sampler3D _Grider;
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
-  |     1     2     3     4     5     | = ItemPoinsN = ElemBricsN-1
+  |     1     2     3     4     5     | = ItemPoinsN = ElemCellsN-1
   +-----o-----o-----o-----o-----o-----+
-  |     |  1  |  2  |  3  |  4  |     | = ItemBricsN = ItemPoinsN-1
+  |     |  1  |  2  |  3  |  4  |     | = ItemCellsN = ItemPoinsN-1
   |     |     |     |     |     |     |
   +-----+-----+-----+-----+-----+-----+
   0    1/6   2/6   3/6   4/6   5/6    1 = Texture Coordinate
 */
 
-const ivec3 _ElemPoinsN = textureSize( _Grider, 0 );
-const ivec3 _ElemBricsN = _ElemPoinsN - ivec3( 1 );
-const ivec3 _ItemPoinsN = _ElemBricsN - ivec3( 1 );
-const ivec3 _ItemBricsN = _ItemPoinsN - ivec3( 1 );
+const ivec3 _ElemPoinsN = textureSize( _Grid, 0 );
+const ivec3 _ElemCellsN = _ElemPoinsN - ivec3( 1 );
+const ivec3 _ItemPoinsN = _ElemCellsN - ivec3( 1 );
+const ivec3 _ItemCellsN = _ItemPoinsN - ivec3( 1 );
 
-const vec3 _CellSize = _GridSize / _ItemBricsN;
+const vec3 _CellSize = _GridSize / _ItemCellsN;
 
 //############################################################################## ■
 
@@ -73,7 +73,7 @@ _Result;
 
 float GetPoins( int X, int Y, int Z )
 {
-  return texelFetch( _Grider, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).x - _Threshold;
+  return texelFetch( _Grid, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).x - _Threshold;
 }
 
 //------------------------------------------------------------------------------
