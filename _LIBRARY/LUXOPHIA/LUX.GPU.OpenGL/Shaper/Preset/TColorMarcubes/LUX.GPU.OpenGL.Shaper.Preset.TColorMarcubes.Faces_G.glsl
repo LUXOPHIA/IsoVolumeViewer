@@ -15,33 +15,33 @@ layout( std140 ) uniform TThreshold{ float _Threshold; };
 uniform sampler3D _Grider;
 
 /*
- -1     0    +1    +2    +3    +4    +5 = ItemGrids Coordinate
+ -1     0    +1    +2    +3    +4    +5 = ItemPoins Coordinate
   +-----+-----+-----+-----+-----+-----+
   |     |     |     |     |     |     |
-  1     2     3     4     5     6     7 = ElemGridsN
+  1     2     3     4     5     6     7 = ElemPoinsN
   +-----o-----o-----o-----o-----o-----+
-  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemBricsN = ElemGridsN-1
+  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemBricsN = ElemPoinsN-1
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
-  |     |     |     |     |     |     |    + : ElemGrid
+  |     |     |     |     |     |     |    + : ElemPoin
   +-----o-----o-----o-----o-----o-----+
-  |     |     |     |     |     |     |    o : ItemGrid
+  |     |     |     |     |     |     |    o : ItemPoin
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
-  |     1     2     3     4     5     | = ItemGridsN = ElemBricsN-1
+  |     1     2     3     4     5     | = ItemPoinsN = ElemBricsN-1
   +-----o-----o-----o-----o-----o-----+
-  |     |  1  |  2  |  3  |  4  |     | = ItemBricsN = ItemGridsN-1
+  |     |  1  |  2  |  3  |  4  |     | = ItemBricsN = ItemPoinsN-1
   |     |     |     |     |     |     |
   +-----+-----+-----+-----+-----+-----+
   0    1/6   2/6   3/6   4/6   5/6    1 = Texture Coordinate
 */
 
-const ivec3 _ElemGridsN = textureSize( _Grider, 0 );
-const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
-const ivec3 _ItemGridsN = _ElemBricsN - ivec3( 1 );
-const ivec3 _ItemBricsN = _ItemGridsN - ivec3( 1 );
+const ivec3 _ElemPoinsN = textureSize( _Grider, 0 );
+const ivec3 _ElemBricsN = _ElemPoinsN - ivec3( 1 );
+const ivec3 _ItemPoinsN = _ElemBricsN - ivec3( 1 );
+const ivec3 _ItemBricsN = _ItemPoinsN - ivec3( 1 );
 
 const vec3 _CellSize = _GridSize / _ItemBricsN;
 
@@ -349,7 +349,7 @@ const TTrias TRIASTABLE[ 256 ] = TTrias[ 256 ](
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
 
-float GetGrids( int X, int Y, int Z )
+float GetPoins( int X, int Y, int Z )
 {
   return texelFetch( _Grider, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).a - _Threshold;
 }
@@ -405,14 +405,14 @@ void AddFace( TPoin P1, TPoin P2, TPoin P3 )
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-const float G000 = GetGrids( X0, Y0, Z0 );
-const float G001 = GetGrids( X1, Y0, Z0 );
-const float G010 = GetGrids( X0, Y1, Z0 );
-const float G011 = GetGrids( X1, Y1, Z0 );
-const float G100 = GetGrids( X0, Y0, Z1 );
-const float G101 = GetGrids( X1, Y0, Z1 );
-const float G110 = GetGrids( X0, Y1, Z1 );
-const float G111 = GetGrids( X1, Y1, Z1 );
+const float G000 = GetPoins( X0, Y0, Z0 );
+const float G001 = GetPoins( X1, Y0, Z0 );
+const float G010 = GetPoins( X0, Y1, Z0 );
+const float G011 = GetPoins( X1, Y1, Z0 );
+const float G100 = GetPoins( X0, Y0, Z1 );
+const float G101 = GetPoins( X1, Y0, Z1 );
+const float G110 = GetPoins( X0, Y1, Z1 );
+const float G111 = GetPoins( X1, Y1, Z1 );
 
 //------------------------------------------------------------------------------
 
