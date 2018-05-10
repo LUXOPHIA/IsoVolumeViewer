@@ -9,6 +9,7 @@ uses
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
   LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D3,
   LUX.GPU.OpenGL.Viewer,
   LUX.GPU.OpenGL.Scener,
   LUX.GPU.OpenGL.Camera,
@@ -57,7 +58,8 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses System.Math;
+uses System.Math,
+     Winapi.OpenGL, Winapi.OpenGLext;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -97,6 +99,7 @@ procedure TForm1.LoadVolumeSVD( const FileName_:STring; const SizeX_,SizeY_,Size
 var
    Vs :TArray<Word>;
    VsN, X, Y, Z :Integer;
+   D :TGLPoiPixIter3D<Single>;
 begin
      with _Shaper do
      begin
@@ -104,7 +107,7 @@ begin
           SizeY := SizeY_;
           SizeZ := SizeZ_;
 
-          with Textur.Imager.Grider do
+          with Textur.Imager.Grid do
           begin
                PoinsX := BricX_;
                PoinsY := BricY_;
@@ -113,6 +116,8 @@ begin
                VsN := BricY_ * BricX_;
 
                SetLength( Vs, VsN );
+
+               D := Map( GL_WRITE_ONLY );
 
                for Z := 0 to CellsZ do
                begin
@@ -124,8 +129,10 @@ begin
                     end;
 
                     for Y := 0 to CellsY do
-                    for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - RevBytes( Vs[ BricX_ * Y + X ] ) / 4096;
+                    for X := 0 to CellsX do D[ X, Y, Z ] := 1 - RevBytes( Vs[ BricX_ * Y + X ] ) / 4096;
                end;
+
+               D.DisposeOf;
           end;
 
           MakeModel;
@@ -139,6 +146,7 @@ var
    BsX, BsY, BsZ :Word;
    VsN, X, Y, Z :Integer;
    Vs :TArray<Word>;
+   D :TGLPoiPixIter3D<Single>;
 begin
      with TFileStream.Create( '..\..\_DATA\TU Wien\' + FileName_, fmOpenRead ) do
      begin
@@ -161,15 +169,19 @@ begin
           SizeY := SizeY_;
           SizeZ := SizeZ_;
 
-          with Textur.Imager.Grider do
+          with Textur.Imager.Grid do
           begin
                PoinsX := BsX;
                PoinsY := BsY;
                PoinsZ := BsZ;
 
+               D := Map( GL_WRITE_ONLY );
+
                for Z := 0 to CellsZ do
                for Y := 0 to CellsY do
-               for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - Vs[ ( BsY * Z + Y ) * BsX + X ] / 4095;
+               for X := 0 to CellsX do D[ X, Y, Z ] := 1 - Vs[ ( BsY * Z + Y ) * BsX + X ] / 4095;
+
+               D.DisposeOf;
           end;
 
           MakeModel;
@@ -184,6 +196,7 @@ var
    SX, SY, SZ :Single;
    VsN, X, Y, Z :Integer;
    Vs :TArray<Byte>;
+   D :TGLPoiPixIter3D<Single>;
 begin
      with TFileStream.Create( '..\..\_DATA\ECS 277\' + FileName_, fmOpenRead ) do
      begin
@@ -212,15 +225,19 @@ begin
           SizeY := SY;
           SizeZ := SZ;
 
-          with Textur.Imager.Grider do
+          with Textur.Imager.Grid do
           begin
                PoinsX := BsX;
                PoinsY := BsY;
                PoinsZ := BsZ;
 
+               D := Map( GL_WRITE_ONLY );
+
                for Z := 0 to CellsZ do
                for Y := 0 to CellsY do
-               for X := 0 to CellsX do Poins[ X, Y, Z ] := 1 - Vs[ ( Z * BsY + Y ) * BsX + X ] / 255;
+               for X := 0 to CellsX do D[ X, Y, Z ] := 1 - Vs[ ( Z * BsY + Y ) * BsX + X ] / 255;
+
+               D.DisposeOf;
           end;
 
           MakeModel;
