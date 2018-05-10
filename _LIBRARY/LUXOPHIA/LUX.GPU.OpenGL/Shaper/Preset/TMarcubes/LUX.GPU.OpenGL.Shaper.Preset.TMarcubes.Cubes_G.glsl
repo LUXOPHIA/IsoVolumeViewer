@@ -7,7 +7,7 @@ layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };
 layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };
 layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };
 
-layout( std140 ) uniform TGriderS  { vec3  _GriderS;   };
+layout( std140 ) uniform TGridSize { vec3  _GridSize;  };
 layout( std140 ) uniform TThreshold{ float _Threshold; };
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
 const ivec3 _ItemGridsN = _ElemBricsN - ivec3( 1 );
 const ivec3 _ItemBricsN = _ItemGridsN - ivec3( 1 );
 
-const vec3 _BricS = _GriderS / _ItemBricsN;
+const vec3 _CellSize = _GridSize / _ItemBricsN;
 
 //############################################################################## ■
 
@@ -80,7 +80,7 @@ float GetGrids( int X, int Y, int Z )
 
 void AddPoin( vec3 Pos )
 {
-  _Result.Pos = _ShaperPose * vec4( Pos * _BricS - _GriderS / 2, 1 );
+  _Result.Pos = _ShaperPose * vec4( Pos * _CellSize - _GridSize / 2, 1 );
 
   gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
 

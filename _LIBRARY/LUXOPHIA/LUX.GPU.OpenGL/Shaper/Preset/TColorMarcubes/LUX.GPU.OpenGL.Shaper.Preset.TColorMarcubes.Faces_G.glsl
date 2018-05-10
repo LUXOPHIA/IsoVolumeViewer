@@ -7,7 +7,7 @@ layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };
 layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };
 layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };
 
-layout( std140 ) uniform TGriderS  { vec3  _GriderS;   };
+layout( std140 ) uniform TGridSize { vec3  _GridSize;  };
 layout( std140 ) uniform TThreshold{ float _Threshold; };
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
 const ivec3 _ItemGridsN = _ElemBricsN - ivec3( 1 );
 const ivec3 _ItemBricsN = _ItemGridsN - ivec3( 1 );
 
-const vec3 _BricS = _GriderS / _ItemBricsN;
+const vec3 _CellSize = _GridSize / _ItemBricsN;
 
 //############################################################################## ■
 
@@ -467,9 +467,9 @@ TPoin MakePoin( int I )
       T = G011 / ( G011 - G111 );  P = vec3( X1, Y1, Z0+T );  break;
   }
 
-  Result.Pos = vec4( P * _BricS - _GriderS / 2, 1 );
+  Result.Pos = vec4( P * _CellSize - _GridSize / 2, 1 );
   Result.Col = vec4( GetColor( P ).rgb, 1 );
-  Result.Nor = vec4( GetGrad( P ) / _BricS  , 0 );
+  Result.Nor = vec4( GetGrad( P ) / _CellSize  , 0 );
 
   return Result;
 }
