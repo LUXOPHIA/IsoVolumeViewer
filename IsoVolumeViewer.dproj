@@ -431,6 +431,9 @@
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_FacesRGB_F_glsl</ResourceId>
         </RcItem>
+        <None Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_G.glsl"/>
+        <None Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_V.glsl"/>
+        <None Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_F.glsl"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -977,6 +980,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_F.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_29x29.png" Configuration="Debug" Class="iPad_Setting29">
                     <Platform Name="iOSDevice32">
                         <Overwrite>true</Overwrite>
@@ -1267,6 +1276,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_V.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_29x29.png" Configuration="Debug" Class="iPhone_Spotlight29">
                     <Platform Name="iOSDevice32">
                         <Overwrite>true</Overwrite>
@@ -1521,6 +1536,12 @@
                 <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.CellsV.glsl" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TColorMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TColorMarcubes.Faces_G.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
